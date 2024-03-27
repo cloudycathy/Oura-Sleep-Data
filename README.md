@@ -96,13 +96,14 @@ This is not a very large dataset, so cleanup was fairly simple. Oura did add cer
 I wished to create a dashboard to track how my sleep habits changed over the year. On my list of requirements was the ability to zoom in on certain time periods over the year where I knew I had changes to my normal routine. I also wanted to see a distribution of my total hours slept over the course of the year, get an understanding of whether the days of the week had any impact on sleep or activity, and see the general trends over time.
 I played around with using Matplotlib and Seaborn to get some initial ideas for my visualizations, but for the dashboard creation I chose to complete the task in Tableau. Additional benefits of using Tableau for this task include a clean overall look, ease of sharing online, and interactive filters without using additional packages such as Plotly.
 I created this dashboard keeping principles learned in my Google Business Intelligence Certificate in mind.
-![Dashboard](images/image1.png)
+![Dashboard](images/image8.png)
 https://public.tableau.com/app/profile/catherine.george5802/viz/Oura-MySleepStories/SleepStory
 
 Some additional visualizations that I did not determine needed inclusion in my dashboard follow.
-
+![bubbles](images/image2.png)
 Packed bubbles are a nice visualization for a quick overview of the general patterns found in the data. However, when you get close numbers, such as the hours of 7 AM and 8 AM on the Bedtime End plot, you cannot tell which is the larger of the two at first glance. Here, the tooltip is useful to display the counts or the preferred plot may be a histogram.
-
+![Latency](images/image6.png)
+![weekday](images/image3.png)
 
 I did want to see some more on the factors contributing to Sleep Score (see Modeling section for more) but I felt the figures did not truly contribute to the overall story in a meaningful way. I chose to use a line plot to look at sleep latency (how long it takes to fall asleep) averaged weekly over time and a text table to look at several of the scores.
 ## Analysis
@@ -112,6 +113,7 @@ I was also surprised to find that the day of the week did not have a major impac
 ## Modeling
 Oura does not expressly state the algorithm used to calculate the sleep score but does note the seven factors that are contributors: Total Sleep, Efficiency, Restfulness, REM Sleep, Deep Sleep, Latency, and Timing.
 I used a correlation matrix to see how these factors relate to the Sleep Score using my data. The most strongly correlated values were the Total Sleep Duration and the REM Sleep Duration. Sleep Timing and Sleep Latency show the least correlation to the Sleep Score. Sleep Latency is the only factor that is negatively correlated. Latency means the amount of time it takes to fall asleep. If the latency is larger, your quality of sleep is lower.
+![correlation](images/image7.png)
 
 From here, I chose to use a Linear Regression model to see how well it could predict the Sleep Score based off of these factors.
 I started by importing the necessary packages for this modeling.
@@ -155,6 +157,8 @@ plt.grid(which='minor', linewidth=0.1)
 plt.minorticks_on()
 plt.show()
 ```
+![coefficients](images/image9.png)
+
 The equation used to determine the predicted values is: 
 y =
 84.67 
@@ -179,6 +183,7 @@ plt.grid(which='minor', linewidth=0.1)
 plt.minorticks_on()
 plt.show()
 ```
+![scores](images/image1.png)
  
 The model performance can be evaluated using the Mean Squared Error, Mean Absolute Error, and the R-Squared values.
 ```
@@ -193,7 +198,9 @@ r_squared = r2_score(y_test, predictions)
  
 An R-squared close to 1 indicates a good model, anything above 0.8 is generally considered to be a strong model.
 
- 
+ ![hist](images/image5.png)
+![boxplot](images/image4.png)
+
 	
 
 The distribution is left skewed and has several outliers. MSE is preferred for skewed data and is sensitive to outliers and the MAE is less sensitive to outliers. I will use the MSE as the preferred metric for this project. Based on the MSE, the current model can predict within about 3 points the Sleep Score for the night given the seven factors provided which is within reason.
