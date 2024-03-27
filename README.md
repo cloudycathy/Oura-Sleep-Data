@@ -6,8 +6,8 @@ The personal data can be downloaded through a user’s account on Oura as a csv.
 ## Initial Cleaning
 In order to get a clean data set, I first had to find any missing data and add any features that may be useful. I was anxious to get started so I used a go-to tool for when I want to get started quickly – Google Colab. Its clean interface and quick startup made it an obvious choice for this project.
 The csv is loaded into a DataFrame format and the info is shown below. An initial look at my data showed 55 columns – only some of which were of particular interest to me. In order to make the data more useful, I needed to add some new features or clean up existing columns.
-```
-<class 'pandas.core.frame.DataFrame'>
+>
+><class 'pandas.core.frame.DataFrame'>
 RangeIndex: 356 entries, 0 to 355
 Data columns (total 55 columns):
      Column                       Non-Null Count  Dtype     	
@@ -69,23 +69,27 @@ Data columns (total 55 columns):
  54  Sleeping Hours           	355 non-null	float64   	
 dtypes: datetime64[ns](1), float64(28), int64(11), object(15)
 memory usage: 153.1+ KB
-```
+
+
 Simplest among typical cleanup tasks is converting any time features to datetime. From here, it is possible to easily break out the date objects (year, month, day) for ease of use in further analysis.
+```
 data['date'] = pd.to_datetime(data['date'])
 data['Bedtime Start'] = pd.to_datetime(data['Bedtime Start'])
 data['Bedtime End'] = pd.to_datetime(data['Bedtime End'])
 data['day'] = data['date'].dt.day
 data['month'] = data['date'].dt.month
 data['year'] = data['date'].dt.year
+```
 It is also possible to change the data type in Tableau by right clicking on the measure in the Data panel and selecting “Date & Time” under “Change Data Type”. When moved into the columns or rows, it can be broken down further into the date objects easily.
 Oura reports time in seconds, where it is much clearer to review in hours, so all duration related columns were converted to hours. 
 
 #convert seconds to hours
+```
 data['Sleeping Hours'] = data['Total Sleep Duration']/3600
 data['REM Sleep Duration'] = data['REM Sleep Duration']/3600
 data['Light Sleep Duration'] = data['Light Sleep Duration']/3600
 data['Deep Sleep Duration'] = data['Deep Sleep Duration']/3600
-
+```
 This is not a very large dataset, so cleanup was fairly simple. Oura did add certain features over the course of the year so there were some null values under those columns but they were disregarded for the purposes of this study.
 ## Visualization
 I wished to create a dashboard to track how my sleep habits changed over the year. On my list of requirements was the ability to zoom in on certain time periods over the year where I knew I had changes to my normal routine. I also wanted to see a distribution of my total hours slept over the course of the year, get an understanding of whether the days of the week had any impact on sleep or activity, and see the general trends over time.
@@ -109,6 +113,7 @@ I used a correlation matrix to see how these factors relate to the Sleep Score u
 
 From here, I chose to use a Linear Regression model to see how well it could predict the Sleep Score based off of these factors.
 I started by importing the necessary packages for this modeling.
+```
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -119,11 +124,15 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+```
  At this point, I split the data into the features (X) and the target (y). I then created the training and testing sets, using 80% of the data for training and 20% for testing.
+ ```
 X = data[['Sleep Latency', 'Restless Sleep', 'Sleep Timing', 'REM Sleep Duration', 'Deep Sleep Duration', 'Sleep Efficiency', 'Total Sleep Duration']]
 y = data['Sleep Score']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2, random_state=42)
+```
 Creating a pipeline is a clean and organized way to make the steps of a model into a single object. The pipeline can then be fit to the training data. The StandardScaler is used to ensure the features have a similar scale. The coefficients found are applied to the features to find the predicted values.
+```
 pipeline = Pipeline([
 	('scaler', StandardScaler()),
 	('regression', LinearRegression())
@@ -143,7 +152,7 @@ plt.grid(True)
 plt.grid(which='minor', linewidth=0.1)
 plt.minorticks_on()
 plt.show()
-
+```
 The equation used to determine the predicted values is: 
 y =
 84.67 
@@ -156,6 +165,7 @@ y =
 + (5.49 * Total Sleep Duration)
 
 Plotting the predicted values against the actual values, as shown below, indicates generally how well this model performs.
+```
 predictions = pipeline.predict(X_test)
 plt.scatter(y_test, predictions)
 plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'r--', lw=2)
@@ -166,12 +176,14 @@ plt.grid(True)
 plt.grid(which='minor', linewidth=0.1)
 plt.minorticks_on()
 plt.show()
-
+```
  
 The model performance can be evaluated using the Mean Squared Error, Mean Absolute Error, and the R-Squared values.
+```
 mse = mean_squared_error(y_test, predictions)
 mae = mean_absolute_error(y_test, predictions)
 r_squared = r2_score(y_test, predictions)
+```
  The results are as follows:
 ·         Mean Squared Error (MSE): 9.5182
 ·         Mean Absolute Error (MAE): 2.5389
