@@ -1,6 +1,8 @@
 # Oura-Sleep-Data
 Study of Oura sleep data for the year 2023
-Analyzing Sleep Patterns with the Oura Ring
+
+
+# Analyzing Sleep Patterns with the Oura Ring
 In the year 2023 I made the decision – I am going to get better sleep. I went ahead and purchased an Oura ring (https://ouraring.com/oura-experience). While the ring itself was uncomfortable at first, I was amazed at the data exploration possibilities I saw even in the first week. Eventually the discomfort of a bulky ring dissipated and was replaced with the excitement of gaining new insights into my sleep habits. 
 The personal data can be downloaded through a user’s account on Oura as a csv. In my analysis, I used Python and Tableau for cleaning and visualizing the data. My goals were to create a dashboard with a filter on time so I could see how my sleep habits changed over the year and to gain a greater understanding of what goes into the all important Sleep Score that is calculated when I sync every morning.
 ## Initial Cleaning
