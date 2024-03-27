@@ -84,8 +84,8 @@ data['year'] = data['date'].dt.year
 It is also possible to change the data type in Tableau by right clicking on the measure in the Data panel and selecting “Date & Time” under “Change Data Type”. When moved into the columns or rows, it can be broken down further into the date objects easily.
 Oura reports time in seconds, where it is much clearer to review in hours, so all duration related columns were converted to hours. 
 
-#convert seconds to hours
 ```
+#convert seconds to hours
 data['Sleeping Hours'] = data['Total Sleep Duration']/3600
 data['REM Sleep Duration'] = data['REM Sleep Duration']/3600
 data['Light Sleep Duration'] = data['Light Sleep Duration']/3600
@@ -98,6 +98,7 @@ I played around with using Matplotlib and Seaborn to get some initial ideas for 
 I created this dashboard keeping principles learned in my Google Business Intelligence Certificate in mind.
 
 https://public.tableau.com/app/profile/catherine.george5802/viz/Oura-MySleepStories/SleepStory
+
 Some additional visualizations that I did not determine needed inclusion in my dashboard follow.
 
 Packed bubbles are a nice visualization for a quick overview of the general patterns found in the data. However, when you get close numbers, such as the hours of 7 AM and 8 AM on the Bedtime End plot, you cannot tell which is the larger of the two at first glance. Here, the tooltip is useful to display the counts or the preferred plot may be a histogram.
