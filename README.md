@@ -96,7 +96,7 @@ This is not a very large dataset, so cleanup was fairly simple. Oura did add cer
 I wished to create a dashboard to track how my sleep habits changed over the year. On my list of requirements was the ability to zoom in on certain time periods over the year where I knew I had changes to my normal routine. I also wanted to see a distribution of my total hours slept over the course of the year, get an understanding of whether the days of the week had any impact on sleep or activity, and see the general trends over time.
 I played around with using Matplotlib and Seaborn to get some initial ideas for my visualizations, but for the dashboard creation I chose to complete the task in Tableau. Additional benefits of using Tableau for this task include a clean overall look, ease of sharing online, and interactive filters without using additional packages such as Plotly.
 I created this dashboard keeping principles learned in my Google Business Intelligence Certificate in mind.
-
+![Dashboard](images/image1.png)
 https://public.tableau.com/app/profile/catherine.george5802/viz/Oura-MySleepStories/SleepStory
 
 Some additional visualizations that I did not determine needed inclusion in my dashboard follow.
