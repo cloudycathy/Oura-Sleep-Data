@@ -6,7 +6,7 @@ The personal data can be downloaded through a user’s account on Oura as a csv.
 ## Initial Cleaning
 In order to get a clean data set, I first had to find any missing data and add any features that may be useful. I was anxious to get started so I used a go-to tool for when I want to get started quickly – Google Colab. Its clean interface and quick startup made it an obvious choice for this project.
 The csv is loaded into a DataFrame format and the info is shown below. An initial look at my data showed 55 columns – only some of which were of particular interest to me. In order to make the data more useful, I needed to add some new features or clean up existing columns.
-
+```
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 356 entries, 0 to 355
 Data columns (total 55 columns):
@@ -69,7 +69,7 @@ Data columns (total 55 columns):
  54  Sleeping Hours           	355 non-null	float64   	
 dtypes: datetime64[ns](1), float64(28), int64(11), object(15)
 memory usage: 153.1+ KB
-
+```
 Simplest among typical cleanup tasks is converting any time features to datetime. From here, it is possible to easily break out the date objects (year, month, day) for ease of use in further analysis.
 data['date'] = pd.to_datetime(data['date'])
 data['Bedtime Start'] = pd.to_datetime(data['Bedtime Start'])
