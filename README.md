@@ -3,14 +3,14 @@ Study of Oura sleep data for the year 2023
 Analyzing Sleep Patterns with the Oura Ring
 In the year 2023 I made the decision – I am going to get better sleep. I went ahead and purchased an Oura ring (https://ouraring.com/oura-experience). While the ring itself was uncomfortable at first, I was amazed at the data exploration possibilities I saw even in the first week. Eventually the discomfort of a bulky ring dissipated and was replaced with the excitement of gaining new insights into my sleep habits. 
 The personal data can be downloaded through a user’s account on Oura as a csv. In my analysis, I used Python and Tableau for cleaning and visualizing the data. My goals were to create a dashboard with a filter on time so I could see how my sleep habits changed over the year and to gain a greater understanding of what goes into the all important Sleep Score that is calculated when I sync every morning.
-Initial Cleaning
+## Initial Cleaning
 In order to get a clean data set, I first had to find any missing data and add any features that may be useful. I was anxious to get started so I used a go-to tool for when I want to get started quickly – Google Colab. Its clean interface and quick startup made it an obvious choice for this project.
 The csv is loaded into a DataFrame format and the info is shown below. An initial look at my data showed 55 columns – only some of which were of particular interest to me. In order to make the data more useful, I needed to add some new features or clean up existing columns.
 
 <class 'pandas.core.frame.DataFrame'>
 RangeIndex: 356 entries, 0 to 355
 Data columns (total 55 columns):
- #   Column                       Non-Null Count  Dtype     	
+     Column                       Non-Null Count  Dtype     	
 ---  ------                       --------------  -----     	
  0   date                     	356 non-null	datetime64[ns]
  1   Sleep Score              	355 non-null	float64   	
@@ -69,6 +69,7 @@ Data columns (total 55 columns):
  54  Sleeping Hours           	355 non-null	float64   	
 dtypes: datetime64[ns](1), float64(28), int64(11), object(15)
 memory usage: 153.1+ KB
+
 Simplest among typical cleanup tasks is converting any time features to datetime. From here, it is possible to easily break out the date objects (year, month, day) for ease of use in further analysis.
 data['date'] = pd.to_datetime(data['date'])
 data['Bedtime Start'] = pd.to_datetime(data['Bedtime Start'])
@@ -86,7 +87,7 @@ data['Light Sleep Duration'] = data['Light Sleep Duration']/3600
 data['Deep Sleep Duration'] = data['Deep Sleep Duration']/3600
 
 This is not a very large dataset, so cleanup was fairly simple. Oura did add certain features over the course of the year so there were some null values under those columns but they were disregarded for the purposes of this study.
-Visualization
+## Visualization
 I wished to create a dashboard to track how my sleep habits changed over the year. On my list of requirements was the ability to zoom in on certain time periods over the year where I knew I had changes to my normal routine. I also wanted to see a distribution of my total hours slept over the course of the year, get an understanding of whether the days of the week had any impact on sleep or activity, and see the general trends over time.
 I played around with using Matplotlib and Seaborn to get some initial ideas for my visualizations, but for the dashboard creation I chose to complete the task in Tableau. Additional benefits of using Tableau for this task include a clean overall look, ease of sharing online, and interactive filters without using additional packages such as Plotly.
 I created this dashboard keeping principles learned in my Google Business Intelligence Certificate in mind.
@@ -98,11 +99,11 @@ Packed bubbles are a nice visualization for a quick overview of the general patt
 
 
 I did want to see some more on the factors contributing to Sleep Score (see Modeling section for more) but I felt the figures did not truly contribute to the overall story in a meaningful way. I chose to use a line plot to look at sleep latency (how long it takes to fall asleep) averaged weekly over time and a text table to look at several of the scores.
-Analysis
+## Analysis
 Some immediate insights from my dashboard include that I had a slight drop in the summer in my sleep scores, more than likely due to having an old house with a lack of air conditioning.
 In early September I went to a wedding in California. It was my first time leaving the Eastern time zone and it was clearly reflected in my sleep (see average weekly scores). I must be high maintenance because for the next several weeks, my sleep scores did not recover!
 I was also surprised to find that the day of the week did not have a major impact on my scores generally.
-Modeling
+## Modeling
 Oura does not expressly state the algorithm used to calculate the sleep score but does note the seven factors that are contributors: Total Sleep, Efficiency, Restfulness, REM Sleep, Deep Sleep, Latency, and Timing.
 I used a correlation matrix to see how these factors relate to the Sleep Score using my data. The most strongly correlated values were the Total Sleep Duration and the REM Sleep Duration. Sleep Timing and Sleep Latency show the least correlation to the Sleep Score. Sleep Latency is the only factor that is negatively correlated. Latency means the amount of time it takes to fall asleep. If the latency is larger, your quality of sleep is lower.
 
@@ -182,5 +183,5 @@ An R-squared close to 1 indicates a good model, anything above 0.8 is generally 
 	
 
 The distribution is left skewed and has several outliers. MSE is preferred for skewed data and is sensitive to outliers and the MAE is less sensitive to outliers. I will use the MSE as the preferred metric for this project. Based on the MSE, the current model can predict within about 3 points the Sleep Score for the night given the seven factors provided which is within reason.
-Conclusions
+## Conclusions
 The model may not be exact to what Oura uses to calculate the Sleep Score but it is fairly close. From my dashboard I have gained some insights into what affects my sleep and I look forward to continuing this journey.
